@@ -1,63 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
+using AmbaganBusinessDataLogic;
 
 namespace ambaganSystem
 {
     internal class Program
     {
         static string[] make = new string[] { "\n[1] List", "[2] View", "[3] Remove" };
-        static List<Tuple<int, string, int, int, int>> ambags = new List<Tuple<int, string, int, int, int>>();
+        
+        static char chooseAgain = 'Y', addAgain = 'Y';
 
-        static int ccc, set, amnt, change;
-        static string name, reName;
-        static char chs = 'Y', yy = 'Y';
-
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            int pin = 11111, pass;
+            int pass = 0;
             
             do
             {
                 Console.Write("Enter a Pin: ");
                 pass = Convert.ToInt16(Console.ReadLine());
 
-                if (pass != pin)
+                if (!AmbaganProcesses.VerifyPIN(pass))
                 {
                     Console.WriteLine("\nIncorrect Pin! Please try again.");
                 }
 
-            } while (pass != pin);
+            } while (!AmbaganProcesses.VerifyPIN(pass));
 
             Console.WriteLine("\nLogin Successful");
 
-                do
+                while (chooseAgain == 'Y')
                 {
                     showMenu();
-                    int ccc = toDo();
+                    int options = toDo();
 
-                    if (ccc == 1)
+                    if (options == 1)
                     {
                         createList(); 
                     }
 
-                    else if (ccc == 2)
+                    else if (options == 2)
                     {
                         viewList();
                     }
 
-                    else if (ccc == 3)
+                    else if (options == 3)
                     {
                         removeFromList();
                     }
 
                     else
                     {
-                        Console.WriteLine("Invalid Case!");
+                        Console.WriteLine("\nInvalid Case!");
                     }
 
-                    chs = answerYN("Do Another (Y/N): ");
-                    
-                } while (chs == 'Y');
+                    Console.Write("\n-------------------------");
+                    Console.Write("\nBack to Main Menu? (Y/N): ");
+                    chooseAgain = char.ToUpper(Console.ReadLine()[0]);
+                } 
         }
 
         static void showMenu()
@@ -73,65 +72,45 @@ namespace ambaganSystem
         static int toDo()
         {
             Console.Write("To Do: ");
-            int ccc = Convert.ToInt16(Console.ReadLine());
+            int options = Convert.ToInt16(Console.ReadLine());
 
-            return ccc;
+            return options;
         }
 
         static void createList()
         {
             Console.WriteLine("\n-------------------------");
             Console.Write("Set an Amount: ");
-            set = Convert.ToInt16(Console.ReadLine());
+            double set = Convert.ToInt16(Console.ReadLine());
 
             do
             {
-                Console.Write("\nEnter a Name: ");
-                name = Console.ReadLine().ToLower();
+                Console.WriteLine("\n-------------------------");
+                Console.Write("Enter a Name: ");
+                string name = Console.ReadLine().ToLower();
 
                 Console.Write("Enter an Amount: ");
-                amnt = Convert.ToInt16(Console.ReadLine());
+                double amnt = Convert.ToInt16(Console.ReadLine());
 
-                verifySetAmount();
-
-                change = amnt - set;
-
-                ambags.Add(new Tuple<int, string, int, int, int>
-                                   (set, name, amnt, set, change));
+                AmbaganProcesses.VerifySetAmount(set, amnt);
+                AmbaganProcesses.UpdateList(set, name, amnt);
 
                 Console.WriteLine("\nAmbag Added!");
 
                 Console.Write("\nAdd another Ambag? (Y/N): ");
-                yy = char.ToUpper(Console.ReadLine()[0]);
+                addAgain = char.ToUpper(Console.ReadLine()[0]);
 
-            } while (yy == 'Y');
+            } while (addAgain == 'Y');
         }
 
         static void viewList()
         {
-            if (ambags.Count > 0)
-            {
-                Console.WriteLine("\n-------------------------");
-                Console.WriteLine($"Ambagan: {ambags[0].Item1}");
-
-                Console.WriteLine("\nList of Ambags: ");
-
-                foreach (var ambs in ambags)
-                {
-                    Console.WriteLine($"Name: {ambs.Item2}, Bigay: {ambs.Item3}, Ambag: {ambs.Item4}, Sukli: {ambs.Item5}");
-                }
-
-                manageTotals();
-            }
-            else
-            {
-                Console.WriteLine("\nThere are no available list.");
-            }
+            AmbaganProcesses.DisplayAmbags();
         }
 
         static void removeFromList()
         {
-            if (ambags.Count == 0)
+            if (AmbaganProcesses.ambags.Count == 0)
             {
                 Console.WriteLine("\n-------------------------");
                 Console.WriteLine("There are no available list.");
@@ -142,59 +121,17 @@ namespace ambaganSystem
             {
                 Console.WriteLine("\n-------------------------");
                 Console.Write("Enter a Name to Remove: ");
-                reName = Console.ReadLine().ToLower();
+                string reName = Console.ReadLine().ToLower();
 
-                var toRemove = ambags.FindIndex(ntr => ntr.Item2 == reName);
-
-                if (toRemove != -1)
-                {
-                    ambags.RemoveAt(toRemove);
-                    Console.WriteLine($"\n{reName} was removed from the list.");
-                    break;
-                }
-                else
+                if (!AmbaganProcesses.RemoveName(reName))
                 {
                     Console.WriteLine($"\n{reName} is not in the list");
                 }
-
-                Console.Write("\nFind another person? (Y/N): ");
-                yy = char.ToUpper(Console.ReadLine()[0]);
-
-            } while (yy == 'Y');
-        }
-
-        static char answerYN(string YN)
-        {
-            Console.Write($"\n{YN}");
-            return char.ToUpper(Console.ReadLine()[0]);
-        }
-
-        static void manageTotals()
-        {
-            int tAmnt = 0, tSet = 0, tChng = 0;
-            foreach (var ambs in ambags)
-            {
-                tAmnt += ambs.Item3;
-                tSet += ambs.Item4;
-                tChng += ambs.Item5;
-
-            }
-
-            Console.WriteLine($"\nTotal Bigay: {tAmnt} ");
-            Console.WriteLine($"Total Ambag: {tSet} ");
-            Console.WriteLine($"Total Sukli: {tChng} ");
-            Console.WriteLine("-------------------------");
-        }
-
-        static void verifySetAmount()
-        {
-            while (amnt < set) {
-
-                Console.WriteLine("\nGiven amount cannot be smaller than ambagan.");
                 
-                Console.Write("\nEnter an Amount: ");
-                amnt = Convert.ToInt16(Console.ReadLine());
-            }
+                Console.Write("\nFind another person? (Y/N): ");
+                addAgain = char.ToUpper(Console.ReadLine()[0]);
+
+            } while (addAgain == 'Y');
         }
 
     }
