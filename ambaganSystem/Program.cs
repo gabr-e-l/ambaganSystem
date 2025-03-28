@@ -79,9 +79,17 @@ namespace ambaganSystem
 
         static void createList()
         {
+            Console.Write("\nEnter List Name: ");
+            string listName = Console.ReadLine().ToLower();
+
+            if (!AmbaganProcesses.ambags.ContainsKey(listName))
+            {
+                Console.WriteLine($"Created new list: {listName}");
+            }
+
             Console.WriteLine("\n-------------------------");
             Console.Write("Set an Amount: ");
-            double set = Convert.ToInt16(Console.ReadLine());
+            double set = Convert.ToDouble(Console.ReadLine());
 
             do
             {
@@ -90,10 +98,9 @@ namespace ambaganSystem
                 string name = Console.ReadLine().ToLower();
 
                 Console.Write("Enter an Amount: ");
-                double amnt = Convert.ToInt16(Console.ReadLine());
+                double amnt = Convert.ToDouble(Console.ReadLine());
 
-                AmbaganProcesses.VerifySetAmount(set, amnt);
-                AmbaganProcesses.UpdateList(set, name, amnt);
+                AmbaganProcesses.UpdateList(listName, set, name, amnt);
 
                 Console.WriteLine("\nAmbag Added!");
 
@@ -105,33 +112,68 @@ namespace ambaganSystem
 
         static void viewList()
         {
-            AmbaganProcesses.DisplayAmbags();
+            if (AmbaganProcesses.ambags.Count == 0)
+            {
+                Console.WriteLine("\nNo lists available.");
+                return;
+            }
+
+            AmbaganProcesses.DisplayListNames();
+
+            Console.Write("\nEnter list name to view: ");
+            string listName = Console.ReadLine().ToLower();
+
+            AmbaganProcesses.DisplayAmbags(listName);
         }
 
         static void removeFromList()
         {
-            if (AmbaganProcesses.ambags.Count == 0)
+            AmbaganProcesses.DisplayListNames();
+
+            Console.Write("\nEnter the list name: ");
+            string listName = Console.ReadLine().ToLower();
+
+            if (AmbaganProcesses.ambags[listName].Count == 0)
             {
                 Console.WriteLine("\n-------------------------");
-                Console.WriteLine("There are no available list.");
-                return;
+                Console.WriteLine("List not found.");
             }
 
-            do
+            Console.WriteLine("\nDelete a Name (N) or Delete the List (L)? (N/L): ");
+            char deleteNL = char.ToUpper(Console.ReadLine()[0]);
+
+            if (deleteNL == 'L')
             {
-                Console.WriteLine("\n-------------------------");
-                Console.Write("Enter a Name to Remove: ");
-                string reName = Console.ReadLine().ToLower();
-
-                if (!AmbaganProcesses.RemoveName(reName))
+                if (AmbaganProcesses.RemoveList(listName))
                 {
-                    Console.WriteLine($"\n{reName} is not in the list");
+                    Console.WriteLine($"\nList '{listName}' has been deleted.");
                 }
-                
-                Console.Write("\nFind another person? (Y/N): ");
-                addAgain = char.ToUpper(Console.ReadLine()[0]);
+                else
+                {
+                    Console.WriteLine("\nList not found or already removed.");
+                }
+                return;
+            }
+            else if (deleteNL == 'N')
+            {
+                AmbaganProcesses.DisplayAmbags(listName);
 
-            } while (addAgain == 'Y');
+                do
+                {
+                    Console.WriteLine("\n-------------------------");
+                    Console.Write("Enter a Name to Remove: ");
+                    string reName = Console.ReadLine().ToLower();
+
+                    if (!AmbaganProcesses.RemoveName(reName, listName))
+                    {
+                        Console.WriteLine($"\n{reName} is not in the list");
+                    }
+
+                    Console.Write("\nFind another person? (Y/N): ");
+                    addAgain = char.ToUpper(Console.ReadLine()[0]);
+
+                } while (addAgain == 'Y');
+            }
         }
 
     }
