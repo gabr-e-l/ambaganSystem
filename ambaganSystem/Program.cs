@@ -59,6 +59,7 @@ namespace ambaganSystem
                 } 
         }
 
+
         static void showMenu()
         {
             Console.WriteLine("\n-------------------------");
@@ -69,6 +70,7 @@ namespace ambaganSystem
             }
         }
 
+
         static int toDo()
         {
             Console.Write("To Do: ");
@@ -76,6 +78,7 @@ namespace ambaganSystem
 
             return options;
         }
+
 
         static void createList()
         {
@@ -100,6 +103,14 @@ namespace ambaganSystem
                 Console.Write("Enter an Amount: ");
                 double amnt = Convert.ToDouble(Console.ReadLine());
 
+                while (amnt < set)
+                {
+                    Console.WriteLine("\nGiven amount can't be smaller than ambagan.");
+
+                    Console.Write("\nEnter an Amount: ");
+                    amnt = Convert.ToDouble(Console.ReadLine());
+                }
+
                 AmbaganProcesses.UpdateList(listName, set, name, amnt);
 
                 Console.WriteLine("\nAmbag Added!");
@@ -110,25 +121,21 @@ namespace ambaganSystem
             } while (addAgain == 'Y');
         }
 
+
         static void viewList()
         {
-            if (AmbaganProcesses.ambags.Count == 0)
-            {
-                Console.WriteLine("\nNo lists available.");
-                return;
-            }
-
-            AmbaganProcesses.DisplayListNames();
-
+            DisplayListNames();
+       
             Console.Write("\nEnter list name to view: ");
             string listName = Console.ReadLine().ToLower();
 
-            AmbaganProcesses.DisplayAmbags(listName);
+            DisplayAmbags(listName);
         }
+
 
         static void removeFromList()
         {
-            AmbaganProcesses.DisplayListNames();
+            DisplayListNames();
 
             Console.Write("\nEnter the list name: ");
             string listName = Console.ReadLine().ToLower();
@@ -139,7 +146,7 @@ namespace ambaganSystem
                 Console.WriteLine("List not found.");
             }
 
-            Console.WriteLine("\nDelete a Name (N) or Delete the List (L)? (N/L): ");
+            Console.Write("\nDelete a Name (N) or Delete the List (L)? (N/L): ");
             char deleteNL = char.ToUpper(Console.ReadLine()[0]);
 
             if (deleteNL == 'L')
@@ -152,11 +159,11 @@ namespace ambaganSystem
                 {
                     Console.WriteLine("\nList not found or already removed.");
                 }
-                return;
+                
             }
             else if (deleteNL == 'N')
             {
-                AmbaganProcesses.DisplayAmbags(listName);
+                DisplayAmbags(listName);
 
                 do
                 {
@@ -164,8 +171,18 @@ namespace ambaganSystem
                     Console.Write("Enter a Name to Remove: ");
                     string reName = Console.ReadLine().ToLower();
 
-                    if (!AmbaganProcesses.RemoveName(reName, listName))
+                    var toRemove = AmbaganProcesses.ambags[listName].FindIndex(ntr => ntr.Item2 == reName);
+                    if (AmbaganProcesses.RemoveName(reName, listName))
                     {
+                        
+                        if (toRemove != -1)
+                        {
+                            AmbaganProcesses.ambags[listName].RemoveAt(toRemove);
+                            Console.WriteLine($"\n{reName} was removed from the list");
+                            
+                        }
+                    }
+                    else {
                         Console.WriteLine($"\n{reName} is not in the list");
                     }
 
@@ -175,6 +192,82 @@ namespace ambaganSystem
                 } while (addAgain == 'Y');
             }
         }
+
+
+
+        static void DisplayAmbags(string listName)
+        {
+            if (!AmbaganProcesses.ambags.ContainsKey(listName))
+            {
+                Console.WriteLine("List not found!");
+                return;
+            }
+
+            if (AmbaganProcesses.ambags.Count > 0)
+            {
+                Console.WriteLine("\n-------------------------");
+                Console.WriteLine($"Ambagan: {AmbaganProcesses.ambags[listName][0].Item1}");
+                Console.WriteLine("\nList of Ambags: ");
+
+                foreach (var ambs in AmbaganProcesses.ambags[listName])
+                {
+                    Console.WriteLine($"Name: {ambs.Item2}, Bigay: {ambs.Item3}, " +
+                                     $"Ambag: {ambs.Item4}, Sukli: {ambs.Item5}");
+                }
+                ManageTotals(listName);
+            }
+            else
+            {
+                Console.WriteLine("\nThere are no available lists.");
+            }
+        }
+
+
+        static void ManageTotals(string listName)
+        {
+            double tAmnt = 0, tSet = 0, tChng = 0;
+            foreach (var ambs in AmbaganProcesses.ambags[listName])
+            {
+                tAmnt += ambs.Item3;
+                tSet += ambs.Item4;
+                tChng += ambs.Item5;
+            }
+
+            Console.WriteLine($"\nTotal Bigay: {tAmnt}");
+            Console.WriteLine($"Total Ambag: {tSet}");
+            Console.WriteLine($"Total Sukli: {tChng}");
+        }
+
+
+        static void DisplayListNames()
+        {
+            if (AmbaganProcesses.ambags.Count == 0)
+            {
+                Console.WriteLine("\nNo lists available.");
+
+                Console.Write("\nBack to Main Menu? (Y/N): ");
+                chooseAgain = char.ToUpper(Console.ReadLine()[0]);
+
+                if (chooseAgain == 'Y')
+                {
+                    showMenu();
+                    toDo();
+                }
+            }
+
+            else
+            { 
+                Console.WriteLine("\n-------------------------");
+                Console.WriteLine("\nAvailable Lists:");
+                foreach (var list in AmbaganProcesses.ambags.Keys)
+                {
+                    Console.WriteLine($"- {list}");
+                }
+                return;
+            }
+            
+        }
+
 
     }
 }
