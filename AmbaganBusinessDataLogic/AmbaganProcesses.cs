@@ -1,44 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
+using DataLayer;
 
 namespace AmbaganBusinessDataLogic
 {
     public class AmbaganProcesses
     {
-        public static Dictionary<String, List<Tuple<double, string, double, double, double>>>
-        ambags = new();
-
         static int pin = 11111;
 
-        public static void UpdateList(string listName, double set, string name, double amnt)
+        public static void UpdateList(string listName, double setAmount, string name, double amountGiven)
         {
-            if (!ambags.ContainsKey(listName))
+            if (!VerifyEntryExistence(listName, name))
             {
-                ambags[listName] = new List<Tuple<double, string, double, double, double>>();
+                double change = amountGiven - setAmount;
+                AmbagData.ambags.Add(new AmbagData.AmbagEntry(listName, setAmount, name, amountGiven, change));
             }
-
-            double change = amnt - set;
-            ambags[listName].Add(new Tuple<double, string, double, double, double>
-                                             (set, name, amnt, set, change));
         }
 
-        public static bool RemoveName(string reName, string listName)
+        public static bool RemoveNameFromList(string reName, string listName)
         {
-            if (ambags.ContainsKey(listName))
+            var entry = AmbagData.ambags.Find(e => e.ListName == listName && e.Name == reName);
+            if (entry != null)
             {
-                return true;
-            }
-            return false;  
-        }
-
-        public static bool RemoveList(string listName)
-        {
-            if (ambags.ContainsKey(listName))
-            {
-                ambags.Remove(listName);
+                AmbagData.ambags.Remove(entry);
                 return true;
             }
             return false;
+        }
+
+        public static bool RemoveWholeList(string listName)
+        {
+            if (VerifyLNExistence(listName))
+            {
+                AmbagData.ambags.RemoveAll(e => e.ListName == listName);
+                return true;
+            }
+            return false;
+        }
+
+        public static List<AmbagData.AmbagEntry> GetAllLists(string listName)
+        {
+            return AmbagData.ambags.FindAll(e => e.ListName == listName);
+        }
+
+        public static bool VerifyEntryExistence(string listName, string name)
+        {
+            return AmbagData.ambags.Any(e => e.ListName == listName && e.Name == name);
+        }
+
+        public static bool VerifyLNExistence(string listName)
+        {
+            return AmbagData.ambags.Any(e => e.ListName == listName);
         }
 
         public static bool VerifyPIN(int pass)

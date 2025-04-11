@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AmbaganBusinessDataLogic\AmbaganBusinessDataLogic.csproj" />
+    <ProjectReference Include="..\DataLayer\DataLayer.csproj" />
   </ItemGroup>
 
 </Project>

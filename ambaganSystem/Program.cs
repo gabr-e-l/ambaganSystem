@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AmbaganBusinessDataLogic;
+using DataLayer;
 
 namespace ambaganSystem
 {
@@ -85,11 +86,6 @@ namespace ambaganSystem
             Console.Write("\nEnter List Name: ");
             string listName = Console.ReadLine().ToLower();
 
-            if (!AmbaganProcesses.ambags.ContainsKey(listName))
-            {
-                Console.WriteLine($"Created new list: {listName}");
-            }
-
             Console.WriteLine("\n-------------------------");
             Console.Write("Set an Amount: ");
             double set = Convert.ToDouble(Console.ReadLine());
@@ -140,18 +136,12 @@ namespace ambaganSystem
             Console.Write("\nEnter the list name: ");
             string listName = Console.ReadLine().ToLower();
 
-            if (AmbaganProcesses.ambags[listName].Count == 0)
-            {
-                Console.WriteLine("\n-------------------------");
-                Console.WriteLine("List not found.");
-            }
-
             Console.Write("\nDelete a Name (N) or Delete the List (L)? (N/L): ");
             char deleteNL = char.ToUpper(Console.ReadLine()[0]);
 
             if (deleteNL == 'L')
             {
-                if (AmbaganProcesses.RemoveList(listName))
+                if (AmbaganProcesses.RemoveWholeList(listName))
                 {
                     Console.WriteLine($"\nList '{listName}' has been deleted.");
                 }
@@ -159,7 +149,7 @@ namespace ambaganSystem
                 {
                     Console.WriteLine("\nList not found or already removed.");
                 }
-                
+
             }
             else if (deleteNL == 'N')
             {
@@ -167,23 +157,16 @@ namespace ambaganSystem
 
                 do
                 {
-                    Console.WriteLine("\n-------------------------");
-                    Console.Write("Enter a Name to Remove: ");
+                    Console.Write("\nEnter a Name to Remove: ");
                     string reName = Console.ReadLine().ToLower();
 
-                    var toRemove = AmbaganProcesses.ambags[listName].FindIndex(ntr => ntr.Item2 == reName);
-                    if (AmbaganProcesses.RemoveName(reName, listName))
+                    if (AmbaganProcesses.RemoveNameFromList(reName, listName))
                     {
-                        
-                        if (toRemove != -1)
-                        {
-                            AmbaganProcesses.ambags[listName].RemoveAt(toRemove);
-                            Console.WriteLine($"\n{reName} was removed from the list");
-                            
-                        }
+                        Console.WriteLine($"\n{reName} was removed from the list.");
                     }
-                    else {
-                        Console.WriteLine($"\n{reName} is not in the list");
+                    else
+                    {
+                        Console.WriteLine($"\n{reName} is not in the list.");
                     }
 
                     Console.Write("\nFind another person? (Y/N): ");
@@ -194,43 +177,36 @@ namespace ambaganSystem
         }
 
 
-
         static void DisplayAmbags(string listName)
         {
-            if (!AmbaganProcesses.ambags.ContainsKey(listName))
+            List<AmbagData.AmbagEntry> entries = AmbaganProcesses.GetAllLists(listName);
+
+            if (entries.Count == 0)
             {
-                Console.WriteLine("List not found!");
+                Console.WriteLine("\nList not found or empty!");
                 return;
             }
 
-            if (AmbaganProcesses.ambags.Count > 0)
-            {
-                Console.WriteLine("\n-------------------------");
-                Console.WriteLine($"Ambagan: {AmbaganProcesses.ambags[listName][0].Item1}");
-                Console.WriteLine("\nList of Ambags: ");
+            Console.WriteLine("\n-------------------------\nList of Ambags:");
 
-                foreach (var ambs in AmbaganProcesses.ambags[listName])
-                {
-                    Console.WriteLine($"Name: {ambs.Item2}, Bigay: {ambs.Item3}, " +
-                                     $"Ambag: {ambs.Item4}, Sukli: {ambs.Item5}");
-                }
-                ManageTotals(listName);
-            }
-            else
+            foreach (var entry in entries)
             {
-                Console.WriteLine("\nThere are no available lists.");
+                Console.WriteLine($"Name: {entry.Name}, Bigay: {entry.AmountGiven}, " +
+                                  $"Ambag: {entry.SetAmount}, Sukli: {entry.Change}");
             }
+
+            ManageTotals(entries);
         }
 
 
-        static void ManageTotals(string listName)
+        static void ManageTotals(List<AmbagData.AmbagEntry> entries)
         {
             double tAmnt = 0, tSet = 0, tChng = 0;
-            foreach (var ambs in AmbaganProcesses.ambags[listName])
+            foreach (var entry in entries)
             {
-                tAmnt += ambs.Item3;
-                tSet += ambs.Item4;
-                tChng += ambs.Item5;
+                tAmnt += entry.AmountGiven;
+                tSet += entry.SetAmount;
+                tChng += entry.Change;
             }
 
             Console.WriteLine($"\nTotal Bigay: {tAmnt}");
@@ -241,31 +217,25 @@ namespace ambaganSystem
 
         static void DisplayListNames()
         {
-            if (AmbaganProcesses.ambags.Count == 0)
+            var listNames = new HashSet<string>();
+
+            foreach (var entry in AmbagData.ambags)
+            {
+                listNames.Add(entry.ListName);
+            }
+
+            if (listNames.Count == 0)
             {
                 Console.WriteLine("\nNo lists available.");
-
-                Console.Write("\nBack to Main Menu? (Y/N): ");
-                chooseAgain = char.ToUpper(Console.ReadLine()[0]);
-
-                if (chooseAgain == 'Y')
-                {
-                    showMenu();
-                    toDo();
-                }
-            }
-
-            else
-            { 
-                Console.WriteLine("\n-------------------------");
-                Console.WriteLine("\nAvailable Lists:");
-                foreach (var list in AmbaganProcesses.ambags.Keys)
-                {
-                    Console.WriteLine($"- {list}");
-                }
                 return;
             }
-            
+
+            Console.WriteLine("\n-------------------------");
+            Console.WriteLine("\nAvailable Lists:");
+            foreach (var list in listNames)
+            {
+                Console.WriteLine($"- {list}");
+            }
         }
 
 

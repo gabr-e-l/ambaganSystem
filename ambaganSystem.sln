@@ -5,7 +5,9 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ambaganSystem", "ambaganSystem\ambaganSystem.csproj", "{A38D0EE7-F633-464B-9F81-D21923D211F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmbaganBusinessDataLogic", "AmbaganBusinessDataLogic\AmbaganBusinessDataLogic.csproj", "{ADBD6EB9-EA78-4ACF-AB5A-5F64777C47A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmbaganBusinessDataLogic", "AmbaganBusinessDataLogic\AmbaganBusinessDataLogic.csproj", "{ADBD6EB9-EA78-4ACF-AB5A-5F64777C47A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{8157665C-2CF5-4F0D-A92C-649541A5238C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{ADBD6EB9-EA78-4ACF-AB5A-5F64777C47A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADBD6EB9-EA78-4ACF-AB5A-5F64777C47A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADBD6EB9-EA78-4ACF-AB5A-5F64777C47A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8157665C-2CF5-4F0D-A92C-649541A5238C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8157665C-2CF5-4F0D-A92C-649541A5238C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8157665C-2CF5-4F0D-A92C-649541A5238C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8157665C-2CF5-4F0D-A92C-649541A5238C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
