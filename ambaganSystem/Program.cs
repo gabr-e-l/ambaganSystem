@@ -7,51 +7,93 @@ namespace ambaganSystem
 {
     internal class Program
     {
-        static string[] make = new string[] { "\n[1] List", "[2] View", "[3] Remove" };
+        static string[] make = new string[] { "\n[1] Creat List", "[2] View Lists", "[3] Remove Function", "[4] Search Records", "[5] Logout" };
         
         static char chooseAgain = 'Y', addAgain = 'Y';
 
         public static void Main(string[] args)
         {
-            int pass = 0;
+            OfficerAccountsService accountService = new OfficerAccountsService();
+            string accountNumber, userPin, officerPosition;
             
             do
             {
-                Console.Write("Enter a Pin: ");
-                pass = Convert.ToInt16(Console.ReadLine());
+                Console.WriteLine("\n-------------------------");
+                Console.Write("Enter Account Number: ");
+                accountNumber = Console.ReadLine();
 
-                if (!AmbaganProcesses.VerifyPIN(pass))
+                Console.Write("Enter a PIN: ");
+                userPin = Console.ReadLine();
+
+                officerPosition = accountService.GetOfficerPosition(accountNumber);
+
+                if (!accountService.ValidateAccount(accountNumber, userPin))
                 {
-                    Console.WriteLine("\nIncorrect Pin! Please try again.");
+                    Console.WriteLine("\nIncorrect Credentials! Please try again.");
                 }
 
-            } while (!AmbaganProcesses.VerifyPIN(pass));
+            } while (!accountService.ValidateAccount(accountNumber, userPin));
 
             Console.WriteLine("\nLogin Successful");
 
                 while (chooseAgain == 'Y')
                 {
-                    showMenu();
+                    showMenu(officerPosition);
                     int options = toDo();
 
-                    if (options == 1)
+                    if (officerPosition == "Treasurer")
                     {
-                        createList(); 
-                    }
+                        if (options == 1)
+                        {
+                            createList();
+                        }
 
-                    else if (options == 2)
-                    {
-                        viewList();
-                    }
+                        else if (options == 2)
+                        {
+                            viewList();
+                        }
 
-                    else if (options == 3)
-                    {
-                        removeFromList();
-                    }
+                        else if (options == 3)
+                        {
+                            removeFromList();
+                        }
 
+                        else if (options == 4)
+                        {
+                            searchRecords();
+                        }
+
+                        else if (options == 5)
+                        {
+                            Console.WriteLine("\nAccount Closed.");
+                                Main(args);
+                                break;
+                        }
+
+                        else
+                        {
+                            Console.WriteLine("\nInvalid Case!");
+                        }
+                    } 
+                
                     else
                     {
-                        Console.WriteLine("\nInvalid Case!");
+                        if (options == 1)
+                        {
+                            viewList();
+                        }
+
+                        else if (options == 2)
+                        {
+                            searchRecords();
+                        }
+
+                        else if (options == 3)
+                        {
+                            Console.WriteLine("\nAccount Closed.");
+                                Main(args);
+                                break;
+                        }
                     }
 
                     Console.Write("\n-------------------------");
@@ -61,13 +103,23 @@ namespace ambaganSystem
         }
 
 
-        static void showMenu()
+        static void showMenu(string officerPosition)
         {
             Console.WriteLine("\n-------------------------");
             Console.WriteLine("~ Main Menu ~");
-            foreach (var mk in make)
+
+            if (officerPosition == "Treasurer")
             {
-                Console.WriteLine(mk);
+                foreach (var mk in make)
+                {
+                    Console.WriteLine(mk);
+                }
+            }
+            else
+            {
+                Console.WriteLine("[1] View\n" +
+                                  "[2] Search Records\n" +
+                                  "[3] Logout");
             }
         }
 
@@ -179,7 +231,8 @@ namespace ambaganSystem
 
         static void DisplayAmbags(string listName)
         {
-            List<AmbagData.AmbagEntry> entries = AmbaganProcesses.GetAllLists(listName);
+            /*List<AmbagData.AmbagEntry>*/ 
+            var entries = AmbaganProcesses.GetAllLists(listName);
 
             if (entries.Count == 0)
             {
@@ -201,28 +254,32 @@ namespace ambaganSystem
 
         static void ManageTotals(List<AmbagData.AmbagEntry> entries)
         {
-            double tAmnt = 0, tSet = 0, tChng = 0;
+            /*double tAmnt = 0, tSet = 0, tChng = 0;
             foreach (var entry in entries)
             {
                 tAmnt += entry.AmountGiven;
                 tSet += entry.SetAmount;
                 tChng += entry.Change;
-            }
+            }*/
 
-            Console.WriteLine($"\nTotal Bigay: {tAmnt}");
-            Console.WriteLine($"Total Ambag: {tSet}");
-            Console.WriteLine($"Total Sukli: {tChng}");
+            var listTotals = AmbaganProcesses.CalculateTotals(entries);
+
+            Console.WriteLine($"\nTotal Bigay: {listTotals.TotalGiven}\n" +
+                              $"Total Ambag: {listTotals.TotalSet}\n" +
+                              $"Total Sukli: {listTotals.TotalChange}");
         }
 
 
         static void DisplayListNames()
         {
-            var listNames = new HashSet<string>();
+            /*var listNames = new HashSet<string>();
 
             foreach (var entry in AmbagData.ambags)
             {
                 listNames.Add(entry.ListName);
-            }
+            }*/
+
+            var listNames = AmbaganProcesses.GetListNames();
 
             if (listNames.Count == 0)
             {
@@ -235,6 +292,30 @@ namespace ambaganSystem
             foreach (var list in listNames)
             {
                 Console.WriteLine($"- {list}");
+            }
+        }
+
+        static void searchRecords()
+        {
+            Console.WriteLine("\nEnter a Name to Search: ");
+            string searchName = Console.ReadLine().ToLower();
+
+            var allRecords = AmbaganProcesses.GetAllRecords(searchName);
+
+            if (allRecords.Count == 0)
+            {
+                Console.WriteLine("\nNo Records Found");
+            }
+
+            else
+            {
+                Console.WriteLine($"\nRecords of '{searchName}':");
+
+                foreach (var record in allRecords)
+                {
+                    Console.WriteLine($"List: {record.ListName}, Name: {record.Name}, Given: {record.AmountGiven}, " +
+                                      $"Set: {record.SetAmount}, Change: {record.Change}");
+                }
             }
         }
 
