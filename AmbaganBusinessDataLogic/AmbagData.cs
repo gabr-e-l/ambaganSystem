@@ -1,4 +1,4 @@
-﻿namespace DataLayer
+﻿namespace AmbaganBusinessDataLogic
 {
     public class AmbagData
     {

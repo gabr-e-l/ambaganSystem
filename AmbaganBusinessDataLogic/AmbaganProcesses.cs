@@ -1,40 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
-using DataLayer;
+//using DataLayer;
+//using AmbagCommon;
 //using static DataLayer.AmbagData;
+using DataLayer;
 
 namespace AmbaganBusinessDataLogic
 {
     public class AmbaganProcesses
     {
         static int pin = 11111;
-        
+        static AmbagDataService ambagService = new AmbagDataService();
+
         public static void UpdateList(string listName, double setAmount, string name, double amountGiven)
         {
             if (!VerifyEntryExistence(listName, name))
             {
                 double change = amountGiven - setAmount;
-                AmbagData.ambags.Add(new AmbagData.AmbagEntry(listName, setAmount, name, amountGiven, change));
+                var entry = new AmbagCommon.AmbagData.AmbagEntry(listName, setAmount, name, amountGiven, change);
+                ambagService.AddEntry(entry);
             }
         }
 
         public static bool RemoveNameFromList(string reName, string listName)
         {
-            //var entry = AmbagData.ambags.Find(e => e.ListName == listName && e.Name == reName);
 
-            AmbagData.AmbagEntry entry = null;
-            foreach (var e in AmbagData.ambags)
+            var allEntries = ambagService.GetAllEntries();
+            AmbagCommon.AmbagData.AmbagEntry entryToRemove = null;
+
+            foreach (var entry in allEntries)
             {
-                if (e.ListName == listName && e.Name == reName)
+                if (entry.ListName == listName && entry.Name == reName)
                 {
-                    entry = e;
+                    entryToRemove = entry;
                 }
             }
 
-            if (entry != null)
+            if (entryToRemove != null)
             {
-                AmbagData.ambags.Remove(entry);
-                return true;
+                return ambagService.RemoveEntry(listName, reName);
+                
             }
             return false;
         }
@@ -43,34 +48,32 @@ namespace AmbaganBusinessDataLogic
         {
             if (VerifyLNExistence(listName))
             {
-                AmbagData.ambags.RemoveAll(e => e.ListName == listName);
-                return true;
+                return ambagService.RemoveList(listName);
             }
             return false;
         }
 
-        public static List<AmbagData.AmbagEntry> GetAllLists(string listName)
+        public static List<AmbagCommon.AmbagData.AmbagEntry> GetListEntries(string listName)
         {
-            //return AmbagData.ambags.FindAll(e => e.ListName == listName);
+            var entries = ambagService.GetAllEntries();
+            var resultEntries = new List<AmbagCommon.AmbagData.AmbagEntry>();
 
-            var result = new List<AmbagData.AmbagEntry>();
-
-            foreach (var entry in AmbagData.ambags)
+            foreach (var entry in entries)
             {
                 if (entry.ListName == listName)
                 {
-                    result.Add(entry);
+                    resultEntries.Add(entry);
                 }
             }
-            return result;
+            return resultEntries;
 
         }
 
         public static bool VerifyEntryExistence(string listName, string name)
         {
-            //return AmbagData.ambags.Any(e => e.ListName == listName && e.Name == name);
+            var entries = ambagService.GetAllEntries();
 
-            foreach (var entry in AmbagData.ambags)
+            foreach (var entry in entries)
             {
                 if (entry.ListName == listName && entry.Name == name)
                 {
@@ -83,9 +86,9 @@ namespace AmbaganBusinessDataLogic
 
         public static bool VerifyLNExistence(string listName)
         {
-            //return AmbagData.ambags.Any(e => e.ListName == listName);
+            var entries = ambagService.GetAllEntries();
 
-            foreach (var entry in AmbagData.ambags)
+            foreach (var entry in entries)
             {
                 if (entry.ListName == listName)
                 {
@@ -97,19 +100,22 @@ namespace AmbaganBusinessDataLogic
 
         public static List<string> GetListNames()
         {
+            var entries = ambagService.GetAllEntries();
             var listNames = new List<string>();
 
-            foreach (var entry in AmbagData.ambags)
+            foreach (var entry in entries)
             {
-                if (!listNames.Contains(entry.ListName)) 
-                     listNames.Add(entry.ListName);
+                if (!listNames.Contains(entry.ListName))
+                { 
+                    listNames.Add(entry.ListName);
+                }
             }
             return listNames;
         }
 
-        public static AmbagData.ListTotals CalculateTotals(List<AmbagData.AmbagEntry> entries)
+        public static AmbagCommon.AmbagData.ListTotals CalculateTotals(List<AmbagCommon.AmbagData.AmbagEntry> entries)
         {
-            var totals = new AmbagData.ListTotals();
+            var totals = new AmbagCommon.AmbagData.ListTotals();
 
             foreach (var entry in entries)
             {
@@ -121,28 +127,20 @@ namespace AmbaganBusinessDataLogic
 
         }
 
-        /*public static bool VerifyPIN(int pass)
+        public static List<AmbagCommon.AmbagData.AmbagEntry> GetAllRecords(string searchName)
         {
-            return pass == pin;
-        }*/
+            var allEntries = ambagService.GetAllEntries();
+            var resultEntries = new List<AmbagCommon.AmbagData.AmbagEntry>();
 
-        public static List<AmbagData.AmbagEntry> GetAllRecords(string searchName)
-        {
-            var allRecords = new List<AmbagData.AmbagEntry>();
-
-            foreach (var listName in GetListNames())
+            foreach (var entry in allEntries)
             {
-                var entries = GetAllLists(listName);
-
-                foreach (var entry in entries)
+                if (entry.Name.ToLower() == searchName.ToLower())
                 {
-                    if (entry.Name.ToLower() == searchName)
-                    {
-                        allRecords.Add(entry);
-                    }
+                    resultEntries.Add(entry);
                 }
             }
-            return allRecords;
+
+            return resultEntries;
         }
 
 

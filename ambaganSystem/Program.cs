@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using AmbaganBusinessDataLogic;
 using DataLayer;
+using AmbagCommon;
 
 namespace ambaganSystem
 {
@@ -231,8 +232,7 @@ namespace ambaganSystem
 
         static void DisplayAmbags(string listName)
         {
-            /*List<AmbagData.AmbagEntry>*/ 
-            var entries = AmbaganProcesses.GetAllLists(listName);
+            var entries = AmbaganProcesses.GetListEntries(listName);
 
             if (entries.Count == 0)
             {
@@ -252,16 +252,8 @@ namespace ambaganSystem
         }
 
 
-        static void ManageTotals(List<AmbagData.AmbagEntry> entries)
+        static void ManageTotals(List<AmbagCommon.AmbagData.AmbagEntry> entries)
         {
-            /*double tAmnt = 0, tSet = 0, tChng = 0;
-            foreach (var entry in entries)
-            {
-                tAmnt += entry.AmountGiven;
-                tSet += entry.SetAmount;
-                tChng += entry.Change;
-            }*/
-
             var listTotals = AmbaganProcesses.CalculateTotals(entries);
 
             Console.WriteLine($"\nTotal Bigay: {listTotals.TotalGiven}\n" +
@@ -272,13 +264,6 @@ namespace ambaganSystem
 
         static void DisplayListNames()
         {
-            /*var listNames = new HashSet<string>();
-
-            foreach (var entry in AmbagData.ambags)
-            {
-                listNames.Add(entry.ListName);
-            }*/
-
             var listNames = AmbaganProcesses.GetListNames();
 
             if (listNames.Count == 0)
