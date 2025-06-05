@@ -4,28 +4,27 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using static AmbagCommon.AmbagData;
-//using AmbaganDataService;
-using DataLayer;
 
 
-namespace DataLogic
+namespace DataLayer
 {
     public class JsonFileDataService : IAmbagDataService
     {
-        string filePath = @"C:\Users\lastr\source\repos\ambaganSystem\ambaganSystem\ambags.json";
+        string filePath = "ambags.json";
 
         public JsonFileDataService()
         {
-            EnsureFileExists();
+            //EnsureFileExists();
+            LoadFromFile();
         }
 
-        private void EnsureFileExists()
+        /*private void EnsureFileExists()
         {
             if (!File.Exists(filePath))
             {
                 File.WriteAllText(filePath, "[]");
             }
-        }
+        }*/
 
         private List<AmbagDataContainer> LoadFromFile()
         {

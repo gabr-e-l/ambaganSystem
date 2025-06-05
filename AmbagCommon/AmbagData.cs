@@ -6,11 +6,11 @@
 
         public class AmbagEntry
         {
-            public string ListName { get; }
-            public double SetAmount { get; }
-            public string Name { get; }
-            public double AmountGiven { get; }
-            public double Change { get; }
+            public string ListName { get; set; }
+            public double SetAmount { get; set; }
+            public string Name { get; set; }
+            public double AmountGiven { get; set; }
+            public double Change { get; set; }
 
             public AmbagEntry(string listName, double setAmount, string name,
                               double amountGiven, double change)
@@ -21,6 +21,8 @@
                 AmountGiven = amountGiven;
                 Change = change;
             }
+
+            public AmbagEntry() { }
         }
 
         public class ListTotals

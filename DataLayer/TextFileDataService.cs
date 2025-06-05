@@ -6,27 +6,28 @@ using System.Linq;
 using static AmbagCommon.AmbagData;
 
 
-
 namespace DataLayer
 {
     public class TextFileDataService : IAmbagDataService
     {
-        //string filePath = "ambags.txt";
-        string filePath = @"C:\Users\lastr\source\repos\ambaganSystem\ambaganSystem\ambags.txt";
+        string filePath = "ambags.txt";
+        //string filePath = @"C:\Users\lastr\source\repos\ambaganSystem\ambaganSystem\ambags.txt";
+
         List<AmbagEntry> entriies = new List<AmbagEntry>();
 
         public TextFileDataService()
         {
-            EnsureFileExists();
+            //EnsureFileExists();
+            LoadFromFile();
         }
 
-        private void EnsureFileExists()
+        /*private void EnsureFileExists()
         {
             if (!File.Exists(filePath))
             {
                 File.Create(filePath).Close();
             }
-        }
+        }*/
 
         
 

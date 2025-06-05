@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using DataLayer;
 using static AmbagCommon.AmbagData;
 
-namespace DataLogic
+namespace DataLayer
 {
     public class InMemoryDataService : IAmbagDataService
     {
