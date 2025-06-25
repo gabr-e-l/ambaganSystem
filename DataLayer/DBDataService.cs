@@ -134,17 +134,16 @@ namespace DataLayer
         {
             ListTotals totals = GetTotals(listName);
 
-            string mergeStatement = @"
-                MERGE Ambagan_Totals AS target
-                USING (SELECT @ListName AS ListName) AS source
-                ON target.ListName = source.ListName
-                WHEN MATCHED THEN 
-                    UPDATE SET TotalSet = @TotalSet, TotalGiven = @TotalGiven, TotalChange = @TotalChange
-                WHEN NOT MATCHED THEN
-                    INSERT (ListName, TotalSet, TotalGiven, TotalChange)
-                    VALUES (@ListName, @TotalSet, @TotalGiven, @TotalChange);";
+            string updateStatement = @"
+                IF EXISTS (SELECT 1 FROM Ambagan_Totals WHERE ListName = @ListName)
+                    UPDATE Ambagan_Totals
+                    SET TotalSet = @TotalSet, TotalGiven = @TotalGiven, TotalChange = @TotalChange
+                    WHERE ListName = @ListName
+                ELSE
+                    INSERT INTO Ambagan_Totals (ListName, TotalSet, TotalGiven, TotalChange)
+                    VALUES (@ListName, @TotalSet, @TotalGiven, @TotalChange)";
 
-            SqlCommand cmd = new SqlCommand(mergeStatement, sqlConnection);
+            SqlCommand cmd = new SqlCommand(updateStatement, sqlConnection);
             cmd.Parameters.AddWithValue("@ListName", listName);
             cmd.Parameters.AddWithValue("@TotalSet", totals.TotalSet);
             cmd.Parameters.AddWithValue("@TotalGiven", totals.TotalGiven);
