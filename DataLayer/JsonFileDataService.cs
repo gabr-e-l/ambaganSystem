@@ -14,17 +14,8 @@ namespace DataLayer
 
         public JsonFileDataService()
         {
-            //EnsureFileExists();
             LoadFromFile();
         }
-
-        /*private void EnsureFileExists()
-        {
-            if (!File.Exists(filePath))
-            {
-                File.WriteAllText(filePath, "[]");
-            }
-        }*/
 
         private List<AmbagDataContainer> LoadFromFile()
         {

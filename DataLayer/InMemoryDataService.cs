@@ -20,7 +20,7 @@ namespace DataLayer
 
         public List<AmbagEntry> GetAllEntries()
         {
-            return new List<AmbagEntry>(_entries); // Return a copy to avoid modification issues
+            return new List<AmbagEntry>(_entries);
         }
 
         public void AddEntry(AmbagEntry entry)

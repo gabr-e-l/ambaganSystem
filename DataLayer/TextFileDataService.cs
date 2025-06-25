@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-//using AmbaganBusinessLogic;
 using static AmbagCommon.AmbagData;
 
 
@@ -11,25 +10,13 @@ namespace DataLayer
     public class TextFileDataService : IAmbagDataService
     {
         string filePath = "ambags.txt";
-        //string filePath = @"C:\Users\lastr\source\repos\ambaganSystem\ambaganSystem\ambags.txt";
 
         List<AmbagEntry> entriies = new List<AmbagEntry>();
 
         public TextFileDataService()
         {
-            //EnsureFileExists();
             LoadFromFile();
         }
-
-        /*private void EnsureFileExists()
-        {
-            if (!File.Exists(filePath))
-            {
-                File.Create(filePath).Close();
-            }
-        }*/
-
-        
 
         private List<AmbagEntry> LoadFromFile()
         {
@@ -88,13 +75,13 @@ namespace DataLayer
                     writer.WriteLine($"Total Bigay: {totalGiven}");
                     writer.WriteLine($"Total Ambag: {totalSet}");
                     writer.WriteLine($"Total Sukli: {totalChange}");
-                    writer.WriteLine(); // extra spacing between lists
+                    writer.WriteLine(); 
                 }
             }
         }
 
 
-        public List<AmbagEntry> GetAllEntries() => LoadFromFile(); // Always get fresh data
+        public List<AmbagEntry> GetAllEntries() => LoadFromFile(); 
 
         public void AddEntry(AmbagEntry entry)
         {
