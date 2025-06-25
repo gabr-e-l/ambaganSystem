@@ -106,8 +106,7 @@ namespace DataLayer
         public ListTotals GetTotals(string listName)
         {
             string selectStatement = @"SELECT 
-                                           ISNULL(SUM(SetAmount), 0) AS TotalSet,
-                                           ISNULL(SUM(AmountGiven), 0) AS TotalGiven,
+                                           ISNULL(SUM(SetAmount), 0) AS TotalSet, ISNULL(SUM(AmountGiven), 0) AS TotalGiven,
                                            ISNULL(SUM(Change), 0) AS TotalChange
                                        FROM Ambagan_Entries
                                        WHERE ListName = @ListName";
