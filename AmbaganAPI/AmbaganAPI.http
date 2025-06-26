@@ -1,0 +1,6 @@
+@AmbaganAPI_HostAddress = http://localhost:5001
+
+GET {{AmbaganAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

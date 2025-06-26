@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmbaganBusinessDataLogic", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\DataLayer.csproj", "{8157665C-2CF5-4F0D-A92C-649541A5238C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmbagCommon", "AmbagCommon\AmbagCommon.csproj", "{E367E09F-883E-44FC-8BD7-9F8243713D53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AmbagCommon", "AmbagCommon\AmbagCommon.csproj", "{E367E09F-883E-44FC-8BD7-9F8243713D53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmbaganAPI", "AmbaganAPI\AmbaganAPI.csproj", "{C21F9A86-54C0-4E85-8B0F-7CE681B01FCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{E367E09F-883E-44FC-8BD7-9F8243713D53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E367E09F-883E-44FC-8BD7-9F8243713D53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E367E09F-883E-44FC-8BD7-9F8243713D53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C21F9A86-54C0-4E85-8B0F-7CE681B01FCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C21F9A86-54C0-4E85-8B0F-7CE681B01FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C21F9A86-54C0-4E85-8B0F-7CE681B01FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C21F9A86-54C0-4E85-8B0F-7CE681B01FCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
