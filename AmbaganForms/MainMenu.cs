@@ -12,32 +12,42 @@ namespace AmbaganForms
 {
     public partial class MainMenu : Form
     {
-        public MainMenu()
+        private string officerPosition;
+
+        public MainMenu(string position)
         {
             InitializeComponent();
+            officerPosition = position;
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            new CreateForm().Show();
+            new CreateForm(officerPosition).Show();
             this.Hide();
         }
 
         private void btnView_Click(object sender, EventArgs e)
         {
-            new ViewForm().Show();
+            new ViewForm(officerPosition).Show();
             this.Hide();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            new DeleteForm().Show();
+            new DeleteForm(officerPosition).Show();
             this.Hide();
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
+            new SearchForm(officerPosition).Show();
+            this.Hide();
+        }
 
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            new Login().Show();
+            this.Hide();
         }
     }
 }

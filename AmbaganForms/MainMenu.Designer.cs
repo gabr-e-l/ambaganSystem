@@ -32,11 +32,13 @@
             btnView = new Button();
             btnDelete = new Button();
             btnSearch = new Button();
+            btnLogout = new Button();
+            label1 = new Label();
             SuspendLayout();
             // 
             // btnCreate
             // 
-            btnCreate.Location = new Point(214, 129);
+            btnCreate.Location = new Point(214, 175);
             btnCreate.Name = "btnCreate";
             btnCreate.Size = new Size(150, 55);
             btnCreate.TabIndex = 0;
@@ -46,7 +48,7 @@
             // 
             // btnView
             // 
-            btnView.Location = new Point(214, 212);
+            btnView.Location = new Point(214, 271);
             btnView.Name = "btnView";
             btnView.Size = new Size(150, 55);
             btnView.TabIndex = 1;
@@ -56,7 +58,7 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(214, 294);
+            btnDelete.Location = new Point(214, 365);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(150, 55);
             btnDelete.TabIndex = 2;
@@ -66,7 +68,7 @@
             // 
             // btnSearch
             // 
-            btnSearch.Location = new Point(214, 386);
+            btnSearch.Location = new Point(214, 462);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(150, 55);
             btnSearch.TabIndex = 3;
@@ -74,11 +76,33 @@
             btnSearch.UseVisualStyleBackColor = true;
             btnSearch.Click += btnSearch_Click;
             // 
+            // btnLogout
+            // 
+            btnLogout.Location = new Point(214, 560);
+            btnLogout.Name = "btnLogout";
+            btnLogout.Size = new Size(150, 55);
+            btnLogout.TabIndex = 4;
+            btnLogout.Text = "Logout";
+            btnLogout.UseVisualStyleBackColor = true;
+            btnLogout.Click += btnLogout_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Arial Rounded MT Bold", 28.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(218, 63);
+            label1.Name = "label1";
+            label1.Size = new Size(146, 54);
+            label1.TabIndex = 5;
+            label1.Text = "Menu";
+            // 
             // MainMenu
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(582, 753);
+            Controls.Add(label1);
+            Controls.Add(btnLogout);
             Controls.Add(btnSearch);
             Controls.Add(btnDelete);
             Controls.Add(btnView);
@@ -86,6 +110,7 @@
             Name = "MainMenu";
             Text = "Main Menu";
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -94,5 +119,7 @@
         private Button btnView;
         private Button btnDelete;
         private Button btnSearch;
+        private Button btnLogout;
+        private Label label1;
     }
 }

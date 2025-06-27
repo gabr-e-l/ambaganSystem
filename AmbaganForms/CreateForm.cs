@@ -18,10 +18,12 @@ namespace AmbaganForms
         private string currentListName = "";
         private double setAmount = 0;
 
+        private string officerPosition;
 
-        public CreateForm()
+        public CreateForm(string position)
         {
             InitializeComponent();
+            officerPosition = position;
         }
 
         private void txtListName_TextChanged(object sender, EventArgs e)
@@ -40,7 +42,7 @@ namespace AmbaganForms
                 return;
             }
 
-            if (currentListName == null || currentListName.Trim() == "" &
+            if (currentListName == null || currentListName == "" &
                 name == null || name.Trim() == "")
             {
                 MessageBox.Show("Text Boxes Cannot be Empty.");
@@ -52,7 +54,7 @@ namespace AmbaganForms
                 MessageBox.Show("Invalid Set Amount.");
                 return;
             }
-            
+
             if (givenAmount < setAmount)
             {
                 MessageBox.Show("Given Amount is less than Set Amount.");
@@ -75,8 +77,9 @@ namespace AmbaganForms
 
         private void btnHome_Click(object sender, EventArgs e)
         {
-            new MainMenu().Show();
+            new MainMenu(officerPosition).Show();
             this.Hide();
         }
+
     }
 }

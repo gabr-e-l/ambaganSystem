@@ -14,10 +14,13 @@ namespace AmbaganForms
 {
     public partial class ViewForm : Form
     {
-        public ViewForm()
+        private string officerPosition;
+
+        public ViewForm(string position)
         {
             InitializeComponent();
             AvailableLists();
+            officerPosition = position;
         }
 
         private void AvailableLists()
@@ -44,7 +47,7 @@ namespace AmbaganForms
 
             string listName = txtListName.Text.ToLower().Trim();
 
-            if (listName == null || listName.Trim() == "")
+            if (listName == null || listName == "")
             {
                 MessageBox.Show("Please enter a list name.");
                 return;
@@ -68,7 +71,15 @@ namespace AmbaganForms
 
         private void btnHome_Click(object sender, EventArgs e)
         {
-            new MainMenu().Show();
+            if (officerPosition == "Treasurer")
+            {
+                new MainMenu(officerPosition).Show();
+            }
+            else
+            {
+                new LimitedMenu(officerPosition).Show();
+            }
+
             this.Hide();
         }
 

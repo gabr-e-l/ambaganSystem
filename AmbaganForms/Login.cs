@@ -24,12 +24,12 @@ namespace AmbaganForms
 
                 if (position == "Treasurer")
                 {
-                    new MainMenu().Show();
+                    new MainMenu(position).Show();
                 }
 
                 else
                 {
-                    new LimitedMenu().Show();
+                    new LimitedMenu(position).Show();
                 }
 
                 this.Hide();

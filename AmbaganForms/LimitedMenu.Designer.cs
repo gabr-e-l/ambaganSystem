@@ -28,12 +28,72 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "LimitedMenu";
+            btnView = new Button();
+            btnSearch = new Button();
+            btnLogout = new Button();
+            label1 = new Label();
+            SuspendLayout();
+            // 
+            // btnView
+            // 
+            btnView.Location = new Point(217, 199);
+            btnView.Name = "btnView";
+            btnView.Size = new Size(142, 90);
+            btnView.TabIndex = 0;
+            btnView.Text = "View Lists";
+            btnView.UseVisualStyleBackColor = true;
+            btnView.Click += btnView_Click;
+            // 
+            // btnSearch
+            // 
+            btnSearch.Location = new Point(217, 347);
+            btnSearch.Name = "btnSearch";
+            btnSearch.Size = new Size(142, 90);
+            btnSearch.TabIndex = 1;
+            btnSearch.Text = "Search a Record";
+            btnSearch.UseVisualStyleBackColor = true;
+            btnSearch.Click += btnSearch_Click;
+            // 
+            // btnLogout
+            // 
+            btnLogout.Location = new Point(217, 507);
+            btnLogout.Name = "btnLogout";
+            btnLogout.Size = new Size(142, 90);
+            btnLogout.TabIndex = 2;
+            btnLogout.Text = "Logout";
+            btnLogout.UseVisualStyleBackColor = true;
+            btnLogout.Click += btnLogout_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Arial Rounded MT Bold", 25.8000011F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(217, 88);
+            label1.Name = "label1";
+            label1.Size = new Size(139, 51);
+            label1.TabIndex = 3;
+            label1.Text = "Menu";
+            // 
+            // LimitedMenu
+            // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(582, 753);
+            Controls.Add(label1);
+            Controls.Add(btnLogout);
+            Controls.Add(btnSearch);
+            Controls.Add(btnView);
+            Name = "LimitedMenu";
+            Text = "Menu";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private Button btnView;
+        private Button btnSearch;
+        private Button btnLogout;
+        private Label label1;
     }
 }

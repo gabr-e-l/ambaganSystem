@@ -12,9 +12,30 @@ namespace AmbaganForms
 {
     public partial class LimitedMenu : Form
     {
-        public LimitedMenu()
+        private string officerPosition;
+
+        public LimitedMenu(string position)
         {
             InitializeComponent();
+            officerPosition = position;
+        }
+
+        private void btnView_Click(object sender, EventArgs e)
+        {
+            new ViewForm(officerPosition).Show();
+            this.Hide();
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            new SearchForm(officerPosition).Show();
+            this.Hide();
+        }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            new Login().Show();
+            this.Hide();
         }
     }
 }
