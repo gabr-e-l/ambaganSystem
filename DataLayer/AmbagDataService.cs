@@ -11,9 +11,9 @@ namespace DataLayer
         public AmbagDataService()
         {
             //dataService = new TextFileDataService();
-            dataService = new JsonFileDataService();
+            //dataService = new JsonFileDataService();
             //dataService = new InMemoryDataService();
-            //dataService = new DBDataService();
+            dataService = new DBDataService();
 
         }
 
