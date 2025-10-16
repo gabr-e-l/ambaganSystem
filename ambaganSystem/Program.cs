@@ -168,6 +168,8 @@ namespace ambaganSystem
                 addAgain = char.ToUpper(Console.ReadLine()[0]);
 
             } while (addAgain == 'Y');
+
+            EmailService.SendNewListEmail(listName, set);
         }
 
 

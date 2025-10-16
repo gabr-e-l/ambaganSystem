@@ -38,6 +38,7 @@
             // 
             // btnCreate
             // 
+            btnCreate.Font = new Font("Arial Rounded MT Bold", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnCreate.Location = new Point(214, 175);
             btnCreate.Name = "btnCreate";
             btnCreate.Size = new Size(150, 55);
@@ -48,6 +49,7 @@
             // 
             // btnView
             // 
+            btnView.Font = new Font("Arial Rounded MT Bold", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnView.Location = new Point(214, 271);
             btnView.Name = "btnView";
             btnView.Size = new Size(150, 55);
@@ -58,6 +60,7 @@
             // 
             // btnDelete
             // 
+            btnDelete.Font = new Font("Arial Rounded MT Bold", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnDelete.Location = new Point(214, 365);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(150, 55);
@@ -68,6 +71,7 @@
             // 
             // btnSearch
             // 
+            btnSearch.Font = new Font("Arial Rounded MT Bold", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnSearch.Location = new Point(214, 462);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(150, 55);
@@ -78,6 +82,7 @@
             // 
             // btnLogout
             // 
+            btnLogout.Font = new Font("Arial Rounded MT Bold", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnLogout.Location = new Point(214, 560);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(150, 55);

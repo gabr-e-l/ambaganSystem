@@ -1,4 +1,5 @@
-﻿using AmbaganBusinessDataLogic;
+﻿using AmbagCommon;
+using AmbaganBusinessDataLogic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,10 +15,10 @@ namespace AmbaganForms
 {
     public partial class CreateForm : Form
     {
-        List<AmbagData.AmbagEntry> newEntries = new List<AmbagData.AmbagEntry>();
+        List<AmbagCommon.AmbagData.AmbagEntry> newEntries = new List<AmbagCommon.AmbagData.AmbagEntry>();
         private string currentListName = "";
         private double setAmount = 0;
-
+        private bool emailSent = false;
         private string officerPosition;
 
         public CreateForm(string position)
@@ -63,13 +64,18 @@ namespace AmbaganForms
 
             double change = givenAmount - setAmount;
 
-            var entry = new AmbagData.AmbagEntry(currentListName, setAmount, name, givenAmount, change);
+            var entry = new AmbagCommon.AmbagData.AmbagEntry(currentListName, setAmount, name, givenAmount, change);
 
             AmbaganProcesses.UpdateList(currentListName, setAmount, name, givenAmount);
 
             newEntries.Add(entry);
 
             listBox1.Items.Add($"Name: {name}, Given: {givenAmount}, Change: {change}");
+
+            if (!emailSent) { 
+                EmailService.SendNewListEmail(currentListName, setAmount);
+                emailSent = true;
+            }
 
             txtName.Clear();
             txtGAmount.Clear();

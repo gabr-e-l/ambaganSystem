@@ -37,7 +37,7 @@ namespace AmbaganForms
 
             if (records.Count == 0)
             {
-                MessageBox.Show("No records.");
+                MessageBox.Show("No records found.");
                 return;
             }
 
