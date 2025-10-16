@@ -14,7 +14,7 @@ namespace AmbaganBusinessDataLogic
             message.From.Add(new MailboxAddress("Ambagan System", "from@example.com"));
             message.To.Add(new MailboxAddress("Treasurer", "me@example.com"));
             message.Subject = $"New Ambagan List Created: {listName}";
-
+            
             message.Body = new TextPart("plain")
             {
                 Text = $"A new list named '{listName}' has been created.\n" +
