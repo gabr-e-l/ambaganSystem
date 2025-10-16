@@ -12,7 +12,7 @@ namespace AmbaganBusinessDataLogic
             
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress("Ambagan System", "from@example.com"));
-            message.To.Add(new MailboxAddress("Treasurer", "me@example.com")); // receiver’s email
+            message.To.Add(new MailboxAddress("Treasurer", "me@example.com"));
             message.Subject = $"New Ambagan List Created: {listName}";
 
             message.Body = new TextPart("plain")
